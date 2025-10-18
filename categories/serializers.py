@@ -1,0 +1,28 @@
+from rest_framework import serializers
+from .models import Category
+from recipes.serializers import RecipeListSerializer
+class CategorySerializer(serializers.ModelSerializer):
+
+    recipes_count = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'slug', 'description', 'image', 
+                  'recipes_count', 'created_at')
+        read_only_fields = ('id', 'slug', 'created_at')
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
+ 
+    recent_recipes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'slug', 'description', 'image', 
+                  'recipes_count', 'recent_recipes', 'created_at')
+        read_only_fields = ('id', 'slug', 'created_at')
+
+    def get_recent_recipes(self, obj):
+        request = self.context.get('request')
+        recent_recipes = obj.recipes.filter(is_published=True).order_by('-created_at')[:5]
+        
+        return RecipeListSerializer(recent_recipes, many=True, context={'request': request}).data

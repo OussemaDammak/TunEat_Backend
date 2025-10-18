@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from urllib.parse import urlparse, parse_qsl
-
+load_dotenv() 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -116,7 +116,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -125,7 +125,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Default primary key field type
