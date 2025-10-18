@@ -16,7 +16,7 @@ class Category(models.Model):
     def save(self,*args,**kwargs):
         if not self.slug:
             self.slug= slugify(self.name)
-            super().save(*args,**kwargs)
+        super().save(*args,**kwargs)
     
     @property
     def recipes_count(self):
