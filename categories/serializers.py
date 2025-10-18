@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Category
-from recipes.serializers import RecipeListSerializer
 class CategorySerializer(serializers.ModelSerializer):
 
     recipes_count = serializers.ReadOnlyField()
@@ -24,5 +23,6 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     def get_recent_recipes(self, obj):
         request = self.context.get('request')
         recent_recipes = obj.recipes.filter(is_published=True).order_by('-created_at')[:5]
-        
+        from recipes.serializers import RecipeListSerializer
+
         return RecipeListSerializer(recent_recipes, many=True, context={'request': request}).data
