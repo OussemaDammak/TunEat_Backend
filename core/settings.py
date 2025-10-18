@@ -181,6 +181,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com", 
 ]
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
 
