@@ -16,7 +16,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -156,6 +155,9 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 12,
 }
 
+ACCOUNT_EMAIL_VERIFICATION = "none"  
+
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -167,6 +169,20 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS= [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    'https://*.onrender.com',
 ]
 
 CORS_ALLOW_CREDENTIALS= True
+
+DEBUG = bool(os.environ.get("DEBUG",'False') == 'True')
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com", 
+]
+CSRF_COOKIE_SECURE = True
+
+INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
