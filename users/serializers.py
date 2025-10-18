@@ -35,7 +35,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'email', 'date_joined')
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-
+    profile_picture = serializers.ImageField(required=False, allow_null=True)
     class Meta:
         model = User
         fields = ('bio', 'profile_picture', 'location')

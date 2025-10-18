@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
@@ -42,6 +43,7 @@ class CustomTokenRefreshView(TokenRefreshView):
 class UserProfileView(generics.RetrieveUpdateAPIView):
 
     queryset   = User.objects.all()
+    parser_classes = [MultiPartParser, FormParser]
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return UserProfileSerializer
