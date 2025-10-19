@@ -15,7 +15,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ('id', 'title', 'slug', 'description', 'author', 'category',
                  'prep_time', 'cook_time', 'total_time', 'difficulty','comments',
-                 'featured_image', 'ingredients', 'instructions', 'tips',
+                 'featured_image','featured_image_resized', 'ingredients', 'instructions', 'tips',
                  'average_rating', 'rating_count', 'favorite_count','comment_count',
                   'is_published', 'is_featured','favorites',
                  'created_at', 'updated_at')
@@ -53,7 +53,7 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ('id', 'title', 'slug', 'description', 'author', 'category',
                  'prep_time', 'cook_time', 'total_time', 'difficulty',
-                 'featured_image', 'ingredients', 'instructions', 'tips',
+                 'featured_image','featured_image_resized', 'ingredients', 'instructions', 'tips',
                  'average_rating', 'rating_count', 'favorite_count',
                  'is_favorited', 'user_rating', 'is_published', 'is_featured',
                  'created_at', 'updated_at')
@@ -76,7 +76,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('title', 'description', 'category', 'prep_time', 'cook_time',
-                 'difficulty', 'featured_image', 'ingredients', 'instructions', 
+                 'difficulty', 'featured_image','featured_image_resized', 'ingredients', 'instructions', 
                  'tips', 'is_published')
 
     def validate_prep_time(self, value):
