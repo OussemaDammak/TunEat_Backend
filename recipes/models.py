@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from PIL import Image
 from cloudinary.models import CloudinaryField
+from cloudinary.utils import cloudinary_url
 
 import os
 
@@ -65,12 +66,18 @@ class Recipe(models.Model):
         super().save(*args, **kwargs)
         
         # Resize featured image
+        
+    @property
+    def featured_image_resized(self):
         if self.featured_image:
-            img = Image.open(self.featured_image.path)
-            if img.height > 800 or img.width > 800:
-                output_size = (800, 800)
-                img.thumbnail(output_size)
-                img.save(self.featured_image.path)
+            url, options = cloudinary_url(
+                self.featured_image.public_id,
+                width=800,
+                height=800,
+                crop="limit"
+            )
+            return url
+        return None
 
     def __str__(self):
         return self.title
