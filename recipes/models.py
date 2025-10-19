@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from PIL import Image
+from cloudinary.models import CloudinaryField
+
 import os
 
 User = get_user_model()
@@ -34,7 +36,7 @@ class Recipe(models.Model):
    
     
     # Images
-    featured_image = models.ImageField(upload_to='recipes/featured/', blank=True)
+    featured_image = CloudinaryField('featured_image', blank=True, null=True)
     
     # Content
     ingredients = models.TextField()
