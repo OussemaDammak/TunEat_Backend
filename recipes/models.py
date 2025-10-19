@@ -69,13 +69,7 @@ class Recipe(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
         
-        # Resize featured image
-        if self.featured_image:
-            img = Image.open(self.featured_image.path)
-            if img.height > 800 or img.width > 800:
-                output_size = (800, 800)
-                img.thumbnail(output_size)
-                img.save(self.featured_image.path)
+        
 
     def __str__(self):
         return self.title
