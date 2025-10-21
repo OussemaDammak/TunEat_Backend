@@ -4,6 +4,15 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q, Avg
 from django_filters.rest_framework import DjangoFilterBackend
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import traceback
+
+
+import stripe
+
+
 
 from .models import Recipe, RecipeFavorite, RecipeRating, RecipeComment
 from .serializers import (
@@ -184,3 +193,35 @@ def comment_on_recipe(request, recipe_id):
         }, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        print("Creating Stripe checkout session...")  # debug
+        origin = request.headers.get("origin")
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {"name": "Support the chef"},
+                    "unit_amount": 500,  # $5
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=f"{origin}/success",
+            cancel_url=f"{origin}/cancel",
+        )
+        print("Stripe session created:", session)
+        return JsonResponse({"url": session.url})
+    except Exception as e:
+        print("Stripe session creation failed:", str(e))
+        traceback.print_exc()  # prints full traceback in Django terminal
+        return JsonResponse({"error": str(e)}, status=500)
